@@ -110,17 +110,17 @@ if ($has_plugin_capability) {
     $temp->add(new admin_setting_configcheckbox('authpreventaccountcreation', new lang_string('authpreventaccountcreation', 'admin'), new lang_string('authpreventaccountcreation_help', 'admin'), 0));
     $temp->add(new admin_setting_configcheckbox('loginpageautofocus', new lang_string('loginpageautofocus', 'admin'), new lang_string('loginpageautofocus_help', 'admin'), 0));
     $temp->add(new admin_setting_configselect('guestloginbutton', new lang_string('guestloginbutton', 'auth'),
-        new lang_string('showguestlogin', 'auth'), '1', array('0' => new lang_string('hide'), '1' => new lang_string('show'))));
+                                              new lang_string('showguestlogin', 'auth'), '1', array('0' => new lang_string('hide'), '1' => new lang_string('show'))));
     $options = array(0 => get_string('no'), 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 10 => 10, 20 => 20, 50 => 50);
     $temp->add(new admin_setting_configselect('limitconcurrentlogins',
         new lang_string('limitconcurrentlogins', 'core_auth'),
         new lang_string('limitconcurrentlogins_desc', 'core_auth'), 0, $options));
     $temp->add(new admin_setting_configtext('alternateloginurl', new lang_string('alternateloginurl', 'auth'),
-        new lang_string('alternatelogin', 'auth', htmlspecialchars(get_login_url())), ''));
+                                            new lang_string('alternatelogin', 'auth', htmlspecialchars(get_login_url())), ''));
     $temp->add(new admin_setting_configtext('forgottenpasswordurl', new lang_string('forgottenpasswordurl', 'auth'),
-        new lang_string('forgottenpassword', 'auth'), '', PARAM_URL));
+                                            new lang_string('forgottenpassword', 'auth'), '', PARAM_URL));
     $temp->add(new admin_setting_confightmleditor('auth_instructions', new lang_string('instructions', 'auth'),
-        new lang_string('authinstructions', 'auth'), ''));
+                                            new lang_string('authinstructions', 'auth'), ''));
     $setting = new admin_setting_configtext('allowemailaddresses', new lang_string('allowemailaddresses', 'admin'),
         new lang_string('configallowemailaddresses', 'admin'), '', PARAM_NOTAGS);
     $setting->set_force_ltr(true);
@@ -231,7 +231,7 @@ if ($has_plugin_capability) {
             'antivirus/enablequarantine',
             new lang_string('enablequarantine', 'antivirus'),
             new lang_string('enablequarantine_help', 'antivirus',
-                \core\antivirus\quarantine::DEFAULT_QUARANTINE_FOLDER),
+            \core\antivirus\quarantine::DEFAULT_QUARANTINE_FOLDER),
             0
         )
     );
@@ -274,12 +274,12 @@ if ($has_plugin_capability) {
     if ($ADMIN->fulltree) {
         $items = array();
         $items[] = new admin_setting_configselect('filteruploadedfiles', new lang_string('filteruploadedfiles', 'admin'), new lang_string('configfilteruploadedfiles', 'admin'), 0,
-            array('0' => new lang_string('none'), '1' => new lang_string('allfiles'), '2' => new lang_string('htmlfilesonly')));
+                array('0' => new lang_string('none'), '1' => new lang_string('allfiles'), '2' => new lang_string('htmlfilesonly')));
         $items[] = new admin_setting_configcheckbox('filtermatchoneperpage', new lang_string('filtermatchoneperpage', 'admin'), new lang_string('configfiltermatchoneperpage', 'admin'), 0);
         $items[] = new admin_setting_configcheckbox('filtermatchonepertext', new lang_string('filtermatchonepertext', 'admin'), new lang_string('configfiltermatchonepertext', 'admin'), 0);
         $items[] = new admin_setting_configcheckbox('filternavigationwithsystemcontext',
-            new lang_string('filternavigationwithsystemcontext', 'admin'),
-            new lang_string('configfilternavigationwithsystemcontext', 'admin'), 0);
+                new lang_string('filternavigationwithsystemcontext', 'admin'),
+                new lang_string('configfilternavigationwithsystemcontext', 'admin'), 0);
         foreach ($items as $item) {
             $item->set_updatedcallback('reset_text_filters_cache');
             $temp->add($item);
@@ -474,7 +474,7 @@ if ($has_plugin_capability) {
 // Question bank settings.
 if ($hassiteconfig || has_capability('moodle/question:config', $systemcontext)) {
     $ADMIN->add('modules', new admin_category('qbanksettings',
-        new lang_string('type_qbank_plural', 'plugin')));
+            new lang_string('type_qbank_plural', 'plugin')));
     $temp = new admin_settingpage('manageqbanks', new lang_string('manageqbanks', 'admin'));
     $temp->add(new \core_question\admin\manage_qbank_plugins_page());
     $ADMIN->add('qbanksettings', $temp);
@@ -499,12 +499,12 @@ if ($hassiteconfig || has_capability('moodle/question:config', $systemcontext)) 
 
     // Question preview defaults.
     $settings = new admin_settingpage('qdefaultsetting',
-        get_string('questionpreviewdefaults', 'question'),
-        'moodle/question:config');
+            get_string('questionpreviewdefaults', 'question'),
+            'moodle/question:config');
     $ADMIN->add('qtypesettings', $settings);
 
     $settings->add(new admin_setting_heading('qdefaultsetting_preview_options',
-        '', get_string('questionpreviewdefaults_desc', 'question')));
+            '', get_string('questionpreviewdefaults_desc', 'question')));
 
     // These keys are question_display_options::HIDDEN and VISIBLE.
     $hiddenofvisible = array(
@@ -513,11 +513,11 @@ if ($hassiteconfig || has_capability('moodle/question:config', $systemcontext)) 
     );
 
     $settings->add(new admin_setting_question_behaviour('question_preview/behaviour',
-        get_string('howquestionsbehave', 'question'), '',
-        'deferredfeedback'));
+            get_string('howquestionsbehave', 'question'), '',
+                    'deferredfeedback'));
 
     $settings->add(new admin_setting_configselect('question_preview/correctness',
-        get_string('whethercorrect', 'question'), '', 1, $hiddenofvisible));
+            get_string('whethercorrect', 'question'), '', 1, $hiddenofvisible));
 
     // These keys are question_display_options::HIDDEN, MARK_ONLY and MARK_AND_MAX.
     $marksoptions = array(
@@ -526,22 +526,22 @@ if ($hassiteconfig || has_capability('moodle/question:config', $systemcontext)) 
         2 => get_string('showmarkandmax', 'question'),
     );
     $settings->add(new admin_setting_configselect('question_preview/marks',
-        get_string('marks', 'question'), '', 2, $marksoptions));
+            get_string('marks', 'question'), '', 2, $marksoptions));
 
     $settings->add(new admin_setting_configselect('question_preview/markdp',
-        get_string('decimalplacesingrades', 'question'), '', 2, array(0, 1, 2, 3, 4, 5, 6, 7)));
+            get_string('decimalplacesingrades', 'question'), '', 2, array(0, 1, 2, 3, 4, 5, 6, 7)));
 
     $settings->add(new admin_setting_configselect('question_preview/feedback',
-        get_string('specificfeedback', 'question'), '', 1, $hiddenofvisible));
+            get_string('specificfeedback', 'question'), '', 1, $hiddenofvisible));
 
     $settings->add(new admin_setting_configselect('question_preview/generalfeedback',
-        get_string('generalfeedback', 'question'), '', 1, $hiddenofvisible));
+            get_string('generalfeedback', 'question'), '', 1, $hiddenofvisible));
 
     $settings->add(new admin_setting_configselect('question_preview/rightanswer',
-        get_string('rightanswer', 'question'), '', 1, $hiddenofvisible));
+            get_string('rightanswer', 'question'), '', 1, $hiddenofvisible));
 
     $settings->add(new admin_setting_configselect('question_preview/history',
-        get_string('responsehistory', 'question'), '', 0, $hiddenofvisible));
+            get_string('responsehistory', 'question'), '', 0, $hiddenofvisible));
 
     // Settings for particular question types.
     $plugins = core_plugin_manager::instance()->get_plugins_of_type('qtype');
@@ -577,7 +577,7 @@ if ($hassiteconfig) {
         $file = $CFG->dirroot . '/course/report/' . $report . '/settings.php';
         if (file_exists($file)) {
             $settings = new admin_settingpage('coursereport' . $report,
-                new lang_string('pluginname', 'coursereport_' . $report), 'moodle/site:config');
+                    new lang_string('pluginname', 'coursereport_' . $report), 'moodle/site:config');
             // settings.php may create a subcategory or unset the settings completely
             include($file);
             if ($settings) {
@@ -601,7 +601,7 @@ foreach (core_component::get_plugin_list('report') as $report => $plugindir) {
     $settings_path = "$plugindir/settings.php";
     if (file_exists($settings_path)) {
         $settings = new admin_settingpage('report' . $report,
-            new lang_string('pluginname', 'report_' . $report), 'moodle/site:config');
+                new lang_string('pluginname', 'report_' . $report), 'moodle/site:config');
         include($settings_path);
         if ($settings) {
             $pages[] = $settings;
@@ -610,7 +610,7 @@ foreach (core_component::get_plugin_list('report') as $report => $plugindir) {
 }
 $ADMIN->add('modules', new admin_category('reportplugins', new lang_string('reports')));
 $ADMIN->add('reportplugins', new admin_externalpage('managereports', new lang_string('reportsmanage', 'admin'),
-    $CFG->wwwroot . '/' . $CFG->admin . '/reports.php'));
+                                                    $CFG->wwwroot . '/' . $CFG->admin . '/reports.php'));
 core_collator::asort_objects_by_property($pages, 'visiblename');
 foreach ($pages as $page) {
     $ADMIN->add('reportplugins', $page);
@@ -628,7 +628,7 @@ if ($hassiteconfig) {
         $settingspath = "$plugindir/settings.php";
         if (file_exists($settingspath)) {
             $settings = new admin_settingpage('search' . $engine,
-                new lang_string('pluginname', 'search_' . $engine), 'moodle/site:config');
+                    new lang_string('pluginname', 'search_' . $engine), 'moodle/site:config');
             include($settingspath);
             if ($settings) {
                 $pages[] = $settings;
@@ -642,7 +642,7 @@ if ($hassiteconfig) {
     // Search engine selection.
     $temp->add(new admin_setting_heading('searchengineheading', new lang_string('searchengine', 'admin'), ''));
     $searchengineselect = new admin_setting_configselect('searchengine',
-        new lang_string('selectsearchengine', 'admin'), '', 'simpledb', $engines);
+            new lang_string('selectsearchengine', 'admin'), '', 'simpledb', $engines);
     $searchengineselect->set_validate_function(function(string $value): string {
         global $CFG;
 
@@ -656,20 +656,20 @@ if ($hassiteconfig) {
     $temp->add($searchengineselect);
     $temp->add(new admin_setting_heading('searchoptionsheading', new lang_string('searchoptions', 'admin'), ''));
     $temp->add(new admin_setting_configcheckbox('searchindexwhendisabled',
-        new lang_string('searchindexwhendisabled', 'admin'), new lang_string('searchindexwhendisabled_desc', 'admin'),
-        0));
+            new lang_string('searchindexwhendisabled', 'admin'), new lang_string('searchindexwhendisabled_desc', 'admin'),
+            0));
     $temp->add(new admin_setting_configduration('searchindextime',
-        new lang_string('searchindextime', 'admin'), new lang_string('searchindextime_desc', 'admin'),
-        600));
+            new lang_string('searchindextime', 'admin'), new lang_string('searchindextime_desc', 'admin'),
+            600));
     $temp->add(new admin_setting_heading('searchcoursesheading', new lang_string('searchablecourses', 'admin'), ''));
     $options = [
         0 => new lang_string('searchallavailablecourses_off', 'admin'),
         1 => new lang_string('searchallavailablecourses_on', 'admin')
     ];
     $temp->add(new admin_setting_configselect('searchallavailablecourses',
-        new lang_string('searchallavailablecourses', 'admin'),
-        new lang_string('searchallavailablecoursesdesc', 'admin'),
-        0, $options));
+            new lang_string('searchallavailablecourses', 'admin'),
+            new lang_string('searchallavailablecoursesdesc', 'admin'),
+            0, $options));
     $temp->add(new admin_setting_configcheckbox('searchincludeallcourses',
         new lang_string('searchincludeallcourses', 'admin'), new lang_string('searchincludeallcourses_desc', 'admin'),
         0));
@@ -712,25 +712,25 @@ if ($hassiteconfig) {
         [], $options));
 
     $temp->add(new admin_setting_heading('searchmanagement', new lang_string('searchmanagement', 'admin'),
-        new lang_string('searchmanagement_desc', 'admin')));
+            new lang_string('searchmanagement_desc', 'admin')));
 
     // Get list of search engines including those with alternate settings.
     $searchenginequeryonlyselect = new admin_setting_configselect('searchenginequeryonly',
-        new lang_string('searchenginequeryonly', 'admin'),
-        new lang_string('searchenginequeryonly_desc', 'admin'), '', function() use($engines) {
-            $options = ['' => new lang_string('searchenginequeryonly_none', 'admin')];
-            foreach ($engines as $name => $display) {
-                $options[$name] = $display;
+            new lang_string('searchenginequeryonly', 'admin'),
+            new lang_string('searchenginequeryonly_desc', 'admin'), '', function() use($engines) {
+                $options = ['' => new lang_string('searchenginequeryonly_none', 'admin')];
+                foreach ($engines as $name => $display) {
+                    $options[$name] = $display;
 
-                $classname = '\search_' . $name . '\engine';
-                $engine = new $classname;
-                if ($engine->has_alternate_configuration()) {
-                    $options[$name . '-alternate'] =
-                        new lang_string('searchenginealternatesettings', 'admin', $display);
+                    $classname = '\search_' . $name . '\engine';
+                    $engine = new $classname;
+                    if ($engine->has_alternate_configuration()) {
+                        $options[$name . '-alternate'] =
+                                new lang_string('searchenginealternatesettings', 'admin', $display);
+                    }
                 }
-            }
-            return $options;
-        });
+                return $options;
+            });
     $searchenginequeryonlyselect->set_validate_function(function(string $value): string {
         global $CFG;
 
@@ -743,10 +743,10 @@ if ($hassiteconfig) {
     });
     $temp->add($searchenginequeryonlyselect);
     $temp->add(new admin_setting_configcheckbox('searchbannerenable',
-        new lang_string('searchbannerenable', 'admin'), new lang_string('searchbannerenable_desc', 'admin'),
-        0));
+            new lang_string('searchbannerenable', 'admin'), new lang_string('searchbannerenable_desc', 'admin'),
+            0));
     $temp->add(new admin_setting_confightmleditor('searchbanner',
-        new lang_string('searchbanner', 'admin'), '', ''));
+            new lang_string('searchbanner', 'admin'), '', ''));
 
     $ADMIN->add('searchplugins', $temp);
     $ADMIN->add('searchplugins', new admin_externalpage('searchareas', new lang_string('searchareas', 'admin'),
@@ -762,7 +762,7 @@ if ($hassiteconfig) {
 if ($hassiteconfig) {
     $ADMIN->add('modules', new admin_category('tools', new lang_string('tools', 'admin')));
     $ADMIN->add('tools', new admin_externalpage('managetools', new lang_string('toolsmanage', 'admin'),
-        $CFG->wwwroot . '/' . $CFG->admin . '/tools.php'));
+                                                     $CFG->wwwroot . '/' . $CFG->admin . '/tools.php'));
 }
 
 // Now add various admin tools.
@@ -779,7 +779,7 @@ if ($hassiteconfig) {
     $ADMIN->add('cache', new admin_externalpage('cacheconfig', new lang_string('cacheconfig', 'cache'), $CFG->wwwroot .'/cache/admin.php'));
     $ADMIN->add('cache', new admin_externalpage('cachetestperformance', new lang_string('testperformance', 'cache'), $CFG->wwwroot . '/cache/testperformance.php'));
     $ADMIN->add('cache', new admin_externalpage('cacheusage',
-        new lang_string('cacheusage', 'cache'), $CFG->wwwroot . '/cache/usage.php'));
+            new lang_string('cacheusage', 'cache'), $CFG->wwwroot . '/cache/usage.php'));
     $ADMIN->add('cache', new admin_category('cachestores', new lang_string('cachestores', 'cache')));
     $ADMIN->locate('cachestores')->set_sorting(true);
     foreach (core_component::get_plugin_list('cachestore') as $plugin => $path) {
@@ -820,7 +820,7 @@ if ($hassiteconfig) {
 if ($hassiteconfig) {
     $ADMIN->add('modules', new admin_category('localplugins', new lang_string('localplugins')));
     $ADMIN->add('localplugins', new admin_externalpage('managelocalplugins', new lang_string('localpluginsmanage'),
-        $CFG->wwwroot . '/' . $CFG->admin . '/localplugins.php'));
+                                                        $CFG->wwwroot . '/' . $CFG->admin . '/localplugins.php'));
 }
 
 // Extend settings for each local plugin. Note that their settings may be in any part of the
