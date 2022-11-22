@@ -17,20 +17,23 @@
 /**
  * Load all plugins into the admin tree.
  *
-* Please note that is file is always loaded last - it means that you can inject entries into other categories too.
-*
-* @package    core
-* @copyright  2007 Petr Skoda {@link http://skodak.org}
-* @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ * Please note that is file is always loaded last - it means that you can inject entries into other categories too.
+ *
+ * @package    core
+ * @copyright  2007 Petr Skoda {@link http://skodak.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 if ($hassiteconfig) {
     /* @var admin_root $ADMIN */
     $ADMIN->locate('modules')->set_sorting(true);
 
     $ADMIN->add('modules', new admin_page_pluginsoverview());
+}
 
-    // activity modules
+// activity modules
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/modsettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('modsettings', new lang_string('activitymodules')));
 
     $ADMIN->add('modsettings', new admin_page_managemods());
@@ -44,10 +47,13 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\mod $plugin */
-        $plugin->load_settings($ADMIN, 'modsettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'modsettings', $has_plugin_capability);
     }
+}
 
-    // course formats
+// course formats
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/formatsettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('formatsettings', new lang_string('courseformats')));
     $temp = new admin_settingpage('manageformats', new lang_string('manageformats', 'core_admin'));
     $temp->add(new admin_setting_manageformats());
@@ -56,10 +62,13 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\format $plugin */
-        $plugin->load_settings($ADMIN, 'formatsettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'formatsettings', $has_plugin_capability);
     }
+}
 
-    // Custom fields.
+// Custom fields.
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/customfieldsettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('customfieldsettings', new lang_string('customfields', 'core_customfield')));
     $temp = new admin_settingpage('managecustomfields', new lang_string('managecustomfields', 'core_admin'));
     $temp->add(new admin_setting_managecustomfields());
@@ -68,20 +77,26 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\customfield $plugin */
-        $plugin->load_settings($ADMIN, 'customfieldsettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'customfieldsettings', $has_plugin_capability);
     }
+}
 
-    // blocks
+// blocks
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/blocksettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('blocksettings', new lang_string('blocks')));
     $ADMIN->add('blocksettings', new admin_page_manageblocks());
     $plugins = core_plugin_manager::instance()->get_plugins_of_type('block');
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\block $plugin */
-        $plugin->load_settings($ADMIN, 'blocksettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'blocksettings', $has_plugin_capability);
     }
+}
 
-    // authentication plugins
+// authentication plugins
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/authsettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('authsettings', new lang_string('authentication', 'admin')));
 
     $temp = new admin_settingpage('manageauths', new lang_string('authsettings', 'admin'));
@@ -90,12 +105,12 @@ if ($hassiteconfig) {
     $temp->add(new admin_setting_special_registerauth());
     $temp->add(new admin_setting_configcheckbox('authloginviaemail', new lang_string('authloginviaemail', 'core_auth'), new lang_string('authloginviaemail_desc', 'core_auth'), 0));
     $temp->add(new admin_setting_configcheckbox('allowaccountssameemail',
-                    new lang_string('allowaccountssameemail', 'core_auth'),
-                    new lang_string('allowaccountssameemail_desc', 'core_auth'), 0));
+        new lang_string('allowaccountssameemail', 'core_auth'),
+        new lang_string('allowaccountssameemail_desc', 'core_auth'), 0));
     $temp->add(new admin_setting_configcheckbox('authpreventaccountcreation', new lang_string('authpreventaccountcreation', 'admin'), new lang_string('authpreventaccountcreation_help', 'admin'), 0));
     $temp->add(new admin_setting_configcheckbox('loginpageautofocus', new lang_string('loginpageautofocus', 'admin'), new lang_string('loginpageautofocus_help', 'admin'), 0));
     $temp->add(new admin_setting_configselect('guestloginbutton', new lang_string('guestloginbutton', 'auth'),
-                                              new lang_string('showguestlogin', 'auth'), '1', array('0'=>new lang_string('hide'), '1'=>new lang_string('show'))));
+                                              new lang_string('showguestlogin', 'auth'), '1', array('0' => new lang_string('hide'), '1' => new lang_string('show'))));
     $options = array(0 => get_string('no'), 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 10 => 10, 20 => 20, 50 => 50);
     $temp->add(new admin_setting_configselect('limitconcurrentlogins',
         new lang_string('limitconcurrentlogins', 'core_auth'),
@@ -105,7 +120,7 @@ if ($hassiteconfig) {
     $temp->add(new admin_setting_configtext('forgottenpasswordurl', new lang_string('forgottenpasswordurl', 'auth'),
                                             new lang_string('forgottenpassword', 'auth'), '', PARAM_URL));
     $temp->add(new admin_setting_confightmleditor('auth_instructions', new lang_string('instructions', 'auth'),
-                                                new lang_string('authinstructions', 'auth'), ''));
+                                            new lang_string('authinstructions', 'auth'), ''));
     $setting = new admin_setting_configtext('allowemailaddresses', new lang_string('allowemailaddresses', 'admin'),
         new lang_string('configallowemailaddresses', 'admin'), '', PARAM_NOTAGS);
     $setting->set_force_ltr(true);
@@ -131,10 +146,13 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\auth $plugin */
-        $plugin->load_settings($ADMIN, 'authsettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'authsettings', $has_plugin_capability);
     }
+}
 
-    // Enrolment plugins
+// Enrolment plugins
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/enrolments:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('enrolments', new lang_string('enrolments', 'enrol')));
     $temp = new admin_settingpage('manageenrols', new lang_string('manageenrols', 'enrol'));
     $temp->add(new admin_setting_manageenrols());
@@ -147,11 +165,13 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\enrol $plugin */
-        $plugin->load_settings($ADMIN, 'enrolments', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'enrolments', $has_plugin_capability);
     }
+}
 
-
-/// Editor plugins
+// Editor plugins
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/editorsettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('editorsettings', new lang_string('editors', 'editor')));
     $temp = new admin_settingpage('manageeditors', new lang_string('editorsettings', 'editor'));
     $temp->add(new admin_setting_manageeditors());
@@ -160,10 +180,13 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\editor $plugin */
-        $plugin->load_settings($ADMIN, 'editorsettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'editorsettings', $has_plugin_capability);
     }
+}
 
-    // Antivirus plugins.
+// Antivirus plugins.
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/mlbackendsettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('antivirussettings', new lang_string('antiviruses', 'antivirus')));
     $temp = new admin_settingpage('manageantiviruses', new lang_string('antivirussettings', 'antivirus'));
     $temp->add(new admin_setting_manageantiviruses());
@@ -228,17 +251,20 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /* @var \core\plugininfo\antivirus $plugin */
-        $plugin->load_settings($ADMIN, 'antivirussettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'antivirussettings', $has_plugin_capability);
     }
 
     // Machine learning backend plugins.
     $ADMIN->add('modules', new admin_category('mlbackendsettings', new lang_string('mlbackendsettings', 'admin')));
     $plugins = core_plugin_manager::instance()->get_plugins_of_type('mlbackend');
     foreach ($plugins as $plugin) {
-        $plugin->load_settings($ADMIN, 'mlbackendsettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'mlbackendsettings', $has_plugin_capability);
     }
+}
 
-/// Filter plugins
+// Filter plugins
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/filtersettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('filtersettings', new lang_string('managefilters')));
 
     $ADMIN->add('filtersettings', new admin_page_managefilters());
@@ -265,10 +291,13 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\filter $plugin */
-        $plugin->load_settings($ADMIN, 'filtersettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'filtersettings', $has_plugin_capability);
     }
+}
 
-    // Media players.
+// Media players.
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/mediaplayers:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('mediaplayers', new lang_string('type_media_plural', 'plugin')));
     $temp = new admin_settingpage('managemediaplayers', new lang_string('managemediaplayers', 'media'));
     $temp->add(new admin_setting_heading('mediaformats', get_string('mediaformats', 'core_media'),
@@ -293,17 +322,20 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\media $plugin */
-        $plugin->load_settings($ADMIN, 'fileconverterplugins', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'fileconverterplugins', $has_plugin_capability);
     }
 
     $plugins = core_plugin_manager::instance()->get_plugins_of_type('media');
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\media $plugin */
-        $plugin->load_settings($ADMIN, 'mediaplayers', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'mediaplayers', $has_plugin_capability);
     }
+}
 
-    // Payment gateway plugins.
+// Payment gateway plugins.
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/paymentgateways:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('paymentgateways', new lang_string('type_paygw_plural', 'plugin')));
     $temp = new admin_settingpage('managepaymentgateways', new lang_string('type_paygwmanage', 'plugin'));
     $temp->add(new \core_admin\local\settings\manage_payment_gateway_plugins());
@@ -319,10 +351,13 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\paygw $plugin */
-        $plugin->load_settings($ADMIN, 'paymentgateways', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'paymentgateways', $has_plugin_capability);
     }
+}
 
-    // Data format settings.
+// Data format settings.
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/dataformatsettings:config', $systemcontext);
+if ($has_plugin_capability) {
     $ADMIN->add('modules', new admin_category('dataformatsettings', new lang_string('dataformats')));
     $temp = new admin_settingpage('managedataformats', new lang_string('managedataformats'));
     $temp->add(new admin_setting_managedataformats());
@@ -332,10 +367,13 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\dataformat $plugin */
-        $plugin->load_settings($ADMIN, 'dataformatsettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'dataformatsettings', $has_plugin_capability);
     }
+}
 
-    //== Portfolio settings ==
+//== Portfolio settings ==
+$has_plugin_capability = $hassiteconfig || has_capability('moodle/repositorysettings:config', $systemcontext);
+if ($has_plugin_capability) {
     require_once($CFG->libdir. '/portfoliolib.php');
     $catname = new lang_string('portfolios', 'portfolio');
     $manage = new lang_string('manageportfolios', 'portfolio');
@@ -429,7 +467,7 @@ if ($hassiteconfig) {
     core_collator::asort_objects_by_property($plugins, 'displayname');
     foreach ($plugins as $plugin) {
         /** @var \core\plugininfo\repository $plugin */
-        $plugin->load_settings($ADMIN, 'repositorysettings', $hassiteconfig);
+        $plugin->load_settings($ADMIN, 'repositorysettings', $has_plugin_capability);
     }
 }
 
